@@ -3,7 +3,7 @@ import styles from './IntakeForm.module.css';
 
 const INVESTMENT_FOCUS_OPTIONS = ['solar', 'wind', 'hydro', 'geothermal', 'storage'];
 
-export default function IntakeForm({ onSubmit }) {
+export default function IntakeForm({ onSubmit, error, submitting }) {
   const [form, setForm] = useState({
     companyName: '',
     companyDesc: '',
@@ -95,6 +95,7 @@ export default function IntakeForm({ onSubmit }) {
             value={form.geoFocus}
             onChange={handleChange}
             placeholder="e.g. Kenya, Nigeria, Brazil"
+            required
           />
         </div>
 
@@ -178,9 +179,11 @@ export default function IntakeForm({ onSubmit }) {
           />
         </div>
 
-        <button className={styles.submit} type="submit">
-          Run analysis →
+        <button className={styles.submit} type="submit" disabled={submitting}>
+          {submitting ? 'Starting analysis…' : 'Run analysis →'}
         </button>
+
+        {error && <p className={styles.error}>{error}</p>}
       </form>
     </main>
   );

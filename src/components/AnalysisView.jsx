@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import WorldMap from './WorldMap.jsx';
 import LiveFeed from './LiveFeed.jsx';
 import useSSE from '../hooks/useSSE.js';
@@ -9,6 +9,7 @@ export default function AnalysisView({ streamId, intake, onDone, onReplayDetecte
   const [toolEvents, setToolEvents] = useState([]);
   const [sections, setSections] = useState([]);
   const [replayFlagSeen, setReplayFlagSeen] = useState(false);
+  const [agentError, setAgentError] = useState(null);
 
   const targetIso3 = new Set(
     (intake?.geoFocus || '')
@@ -44,6 +45,9 @@ export default function AnalysisView({ streamId, intake, onDone, onReplayDetecte
       }
       onDone(data.sections);
     },
+    error: ({ data }) => {
+      setAgentError(data.message || 'An unknown error occurred during analysis.');
+    },
   };
 
   useSSE(streamId, handlers);
@@ -66,6 +70,11 @@ export default function AnalysisView({ streamId, intake, onDone, onReplayDetecte
               <pre className={styles.sectionText}>{s.text}</pre>
             </div>
           ))}
+        </div>
+      )}
+      {agentError && (
+        <div className={styles.errorBanner}>
+          <strong>Analysis error:</strong> {agentError}
         </div>
       )}
     </main>

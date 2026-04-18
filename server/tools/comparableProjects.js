@@ -9,12 +9,7 @@ export default async function handler({ country }) {
   const result = await request({ url, timeoutMs: 8000 });
   if (!result.ok) return { ok: false, reason: result.reason ?? 'request_failed', url };
 
-  let parsed;
-  try {
-    parsed = typeof result.body === 'string' ? JSON.parse(result.body) : result.body;
-  } catch {
-    return { ok: false, reason: 'parse_error', url };
-  }
+  const parsed = result.data;
 
   const projects = parsed?.projects ?? parsed?.data ?? [];
   if (!Array.isArray(projects) || projects.length === 0) return { ok: false, reason: 'no_data', url };

@@ -1,15 +1,44 @@
 import { request } from './httpClient.js';
+import { getAccessToken } from './acledAuth.js';
 
 export async function handler({ country }) {
-  const key = process.env.ACLED_API_KEY;
-  const email = process.env.ACLED_EMAIL;
-
-  if (!key || !email) {
-    return { ok: false, reason: 'missing_key', message: 'ACLED_API_KEY and ACLED_EMAIL are required' };
+  if (!country) {
+    return { ok: false, reason: 'missing_country', message: 'country is required' };
   }
 
-  const url = `https://api.acleddata.com/acled/read?key=${encodeURIComponent(key)}&email=${encodeURIComponent(email)}&country=${encodeURIComponent(country)}&event_date=2023-01-01|2025-12-31&limit=500`;
-  const result = await request(url);
+  let token;
+  try {
+    token = await getAccessToken();
+  } catch (err) {
+    if (err.reason === 'missing_credentials') {
+      return {
+        ok: false,
+        reason: 'missing_credentials',
+        message: 'ACLED_EMAIL and ACLED_PASSWORD are required',
+        source: 'ACLED',
+      };
+    }
+    return { ok: false, reason: 'auth_failed', message: err.message, source: 'ACLED' };
+  }
+
+  const params = new URLSearchParams({
+    _format: 'json',
+    country,
+    event_date: '2024-01-01|2025-12-31',
+    event_date_where: 'BETWEEN',
+    limit: '200',
+    fields: 'event_date|event_type|fatalities',
+  });
+  const url = `https://acleddata.com/api/acled/read?${params.toString()}`;
+
+  const t0 = Date.now();
+  const result = await request({
+    url,
+    headers: { Authorization: `Bearer ${token}` },
+    timeoutMs: 45000,
+  });
+  const elapsed = Date.now() - t0;
+  console.log(`[acled] country=${country} status=${result.ok ? 'ok' : result.reason} elapsed=${elapsed}ms`);
 
   if (!result.ok) {
     return { ok: false, reason: result.reason, message: result.message, source: 'ACLED', url };

@@ -14,15 +14,8 @@ export default async function handler({ country }) {
     if (!result.ok) return { ok: false, reason: result.reason ?? 'request_failed', url: fallbackUrl };
   }
 
-  const body = result.body;
-  if (!body) return { ok: false, reason: 'no_data', url: result.url ?? primaryUrl };
-
-  let parsed;
-  try {
-    parsed = typeof body === 'string' ? JSON.parse(body) : body;
-  } catch {
-    return { ok: false, reason: 'parse_error', url: result.url ?? primaryUrl };
-  }
+  const parsed = result.data;
+  if (!parsed) return { ok: false, reason: 'no_data', url: result.url ?? primaryUrl };
 
   const variable = parsed.variable ?? parsed.name ?? null;
   const rawValues = parsed.values ?? parsed.data ?? parsed.annual ?? [];

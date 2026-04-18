@@ -11,20 +11,52 @@ export default function App() {
   const [intake, setIntake] = useState(null);
   const [deliverables, setDeliverables] = useState(null);
   const [isReplay, setIsReplay] = useState(false);
+  const [error, setError] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
 
-  function handleSubmit(intakeData) {
+  async function handleSubmit(intakeData) {
     setIntake(intakeData);
-    fetch('/api/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(intakeData),
-    })
-      .then((r) => r.json())
-      .then((json) => {
-        setStreamId(json.streamId);
-        setPhase('analyzing');
-      })
-      .catch(() => {});
+    setError(null);
+    setSubmitting(true);
+
+    try {
+      let res;
+      try {
+        res = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(intakeData),
+        });
+      } catch {
+        throw new Error('Cannot reach API server. Is `npm run server` running on :3001?');
+      }
+
+      const json = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        if (res.status === 429 && json.streamId) {
+          setStreamId(json.streamId);
+          setPhase('analyzing');
+          return;
+        }
+        if (!json.error && [500, 502, 503, 504].includes(res.status)) {
+          throw new Error('API server not reachable. Is `npm run server` running on :3001?');
+        }
+        throw new Error(json.error || `Server error (${res.status})`);
+      }
+
+      if (!json.streamId) {
+        throw new Error('No streamId returned from server');
+      }
+
+      setStreamId(json.streamId);
+      setPhase('analyzing');
+    } catch (err) {
+      console.error('Submit failed:', err);
+      setError(err.message || 'Failed to start analysis.');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function handleDone(sections) {
@@ -40,7 +72,7 @@ export default function App() {
     <>
       {isReplay && <ReplayBanner />}
       <Header />
-      {phase === 'intake' && <IntakeForm onSubmit={handleSubmit} />}
+      {phase === 'intake' && <IntakeForm onSubmit={handleSubmit} error={error} submitting={submitting} />}
       {phase === 'analyzing' && (
         <AnalysisView
           streamId={streamId}

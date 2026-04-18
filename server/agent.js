@@ -55,7 +55,7 @@ export async function runAgent(streamId, intake) {
 
   try {
     const messages = [{ role: 'user', content: formatIntake(intake) }];
-    const budget = { callsUsed: 0, maxCalls: 12, iter: 0, maxIters: 6 };
+    const budget = { callsUsed: 0, maxCalls: 24, iter: 0, maxIters: 10 };
     const gLimit = globalLimit(3);
 
     while (budget.iter < budget.maxIters) {

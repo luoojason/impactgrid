@@ -15,12 +15,7 @@ export default async function handler({ lat, lon }) {
   const result = await request({ url, timeoutMs: 8000 });
   if (!result.ok) return { ok: false, reason: result.reason ?? 'request_failed', url };
 
-  let parsed;
-  try {
-    parsed = typeof result.body === 'string' ? JSON.parse(result.body) : result.body;
-  } catch {
-    return { ok: false, reason: 'parse_error', url };
-  }
+  const parsed = result.data;
 
   const props = parsed?.properties?.parameter ?? parsed?.features?.[0]?.properties?.parameter ?? null;
   if (!props) return { ok: false, reason: 'no_data', url };

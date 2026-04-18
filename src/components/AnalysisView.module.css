@@ -54,3 +54,14 @@
   word-break: break-word;
   margin: 0;
 }
+
+.errorBanner {
+  padding: 1rem 1.25rem;
+  background: rgba(255, 60, 60, 0.1);
+  border: 1px solid rgba(255, 60, 60, 0.3);
+  border-radius: 4px;
+  color: #ff6b6b;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}

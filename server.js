@@ -36,13 +36,15 @@ app.post('/api/analyze', (req, res) => {
 
   const intake = req.body;
   if (process.env.DEMO_MODE === 'replay') {
-    startReplay(streamId, intake).catch(e =>
-      appendEvent(streamId, { type: 'error', data: { where: 'demoReplay', message: e.message } })
-    );
+    startReplay(streamId, intake).catch(e => {
+      console.error(`[replay error] streamId=${streamId}`, e.message);
+      appendEvent(streamId, { type: 'error', data: { where: 'demoReplay', message: e.message } });
+    });
   } else {
-    runAgent(streamId, intake).catch(e =>
-      appendEvent(streamId, { type: 'error', data: { where: 'runAgent', message: e.message } })
-    );
+    runAgent(streamId, intake).catch(e => {
+      console.error(`[agent error] streamId=${streamId}`, e.message);
+      appendEvent(streamId, { type: 'error', data: { where: 'runAgent', message: e.message } });
+    });
   }
 });
 
@@ -57,9 +59,7 @@ app.get('/api/stream/:id', (req, res) => {
 
   const lastEventIdHeader = req.headers['last-event-id'];
   const lastEventId = lastEventIdHeader ? parseInt(lastEventIdHeader, 10) : 0;
-  if (lastEventId > 0) {
-    replayFrom(res, session.log, lastEventId);
-  }
+  replayFrom(res, session.log, lastEventId);
 
   const onEvent = (entry) => writeEvent(res, entry);
   session.emitter.on('event', onEvent);

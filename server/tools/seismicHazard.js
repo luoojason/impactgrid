@@ -1,25 +1,19 @@
 import { request } from './httpClient.js';
 
-export default async function handler({ country, minmagnitude = 5, startYear = 2014 }) {
+export default async function handler({ minmagnitude = 5, startYear = 2014 }) {
   const params = new URLSearchParams({
     format: 'geojson',
     minmagnitude: String(minmagnitude),
     starttime: `${startYear}-01-01`,
     limit: '100',
   });
-  if (country) params.set('place', country);
 
   const url = `https://earthquake.usgs.gov/fdsnws/event/1/query?${params.toString()}`;
 
   const result = await request({ url, timeoutMs: 8000 });
   if (!result.ok) return { ok: false, reason: result.reason ?? 'request_failed', url };
 
-  let parsed;
-  try {
-    parsed = typeof result.body === 'string' ? JSON.parse(result.body) : result.body;
-  } catch {
-    return { ok: false, reason: 'parse_error', url };
-  }
+  const parsed = result.data;
 
   const features = parsed?.features ?? [];
   if (!Array.isArray(features)) return { ok: false, reason: 'no_data', url };
