@@ -8,18 +8,21 @@ export async function handler({ country }) {
   }
 
   const iso3 = country.toUpperCase();
-  const url = 'https://data-api.globalforestwatch.org/dataset/umd_tree_cover_loss/latest/query';
+  const url = 'https://data-api.globalforestwatch.org/dataset/gadm__tcl__iso_change/latest/query';
   const body = {
-    sql: `SELECT SUM(area__ha) as loss_ha, umd_tree_cover_loss__year as year FROM data WHERE iso='${iso3}' GROUP BY year ORDER BY year DESC LIMIT 10`,
+    sql: `SELECT umd_tree_cover_loss__year, SUM(umd_tree_cover_loss__ha) as loss_ha FROM data WHERE iso='${iso3}' GROUP BY umd_tree_cover_loss__year ORDER BY umd_tree_cover_loss__year DESC LIMIT 10`,
   };
 
-  const result = await request(url, {
+  const result = await request({
+    url,
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${key}`,
+      'x-api-key': key,
+      'Origin': 'http://localhost',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(body),
+    body,
+    redirect: 'follow',
   });
 
   if (!result.ok) {
@@ -27,7 +30,7 @@ export async function handler({ country }) {
   }
 
   const rows = result.data?.data ?? [];
-  const loss_by_year = rows.map(r => ({ year: r.year, loss_ha: r.loss_ha }));
+  const loss_by_year = rows.map(r => ({ year: r.umd_tree_cover_loss__year, loss_ha: parseFloat(r.loss_ha) }));
 
   return {
     ok: true,

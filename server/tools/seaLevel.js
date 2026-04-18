@@ -4,7 +4,7 @@ import { request } from './httpClient.js';
 
 export async function handler({ country, lat, lon }) {
   const url = 'https://sealevel.nasa.gov/api/v1/chart';
-  const result = await request(url);
+  const result = await request({ url });
 
   if (!result.ok) {
     return {

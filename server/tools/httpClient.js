@@ -1,8 +1,8 @@
-export async function request({ url, method = 'GET', headers = {}, body, timeoutMs = 8000, parse = 'json' }) {
+export async function request({ url, method = 'GET', headers = {}, body, timeoutMs = 8000, parse = 'json', redirect = 'follow' }) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    const opts = { method, headers, signal: controller.signal };
+    const opts = { method, headers, signal: controller.signal, redirect };
     if (body) opts.body = JSON.stringify(body);
     const res = await fetch(url, opts);
     clearTimeout(timer);

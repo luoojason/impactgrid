@@ -3,7 +3,7 @@ import { request } from './httpClient.js';
 export async function handler({ country }) {
   const iso3 = country.toUpperCase();
   const url = `https://api.ipcinfo.org/country?country=${iso3}&format=json`;
-  const result = await request(url);
+  const result = await request({ url });
 
   if (!result.ok) {
     return { ok: false, reason: result.reason, message: result.message, source: 'IPC', url };

@@ -8,7 +8,7 @@ export async function handler({ country, lat, lon }) {
   }
 
   const url = `https://api.worldpop.org/v1/services/stats?dataset=wpgppop&year=2020&geojson={"type":"Point","coordinates":[${lon},${lat}]}`;
-  const result = await request(url);
+  const result = await request({ url });
 
   if (!result.ok) {
     return { ok: false, reason: result.reason, message: result.message, source: 'WorldPop' };
