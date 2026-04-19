@@ -64,18 +64,19 @@
 /* ── Section ── */
 .section {
   background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border-strong);
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0 2px 12px rgba(25, 30, 45, 0.07), 0 1px 3px rgba(25, 30, 45, 0.04);
 }
 
 .sectionHead {
   display: flex;
   align-items: flex-start;
   gap: 1.25rem;
-  padding: 1.5rem 1.75rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
+  padding: 1.25rem 1.75rem;
+  border-bottom: 1.5px solid var(--border);
+  background: oklch(97% 0.004 165);
 }
 
 .sectionNum {
@@ -83,7 +84,7 @@
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--accent);
-  opacity: 0.5;
+  opacity: 0.55;
   flex-shrink: 0;
   line-height: 1.4;
 }
@@ -105,10 +106,11 @@
 }
 
 .fields {
-  padding: 1.5rem 1.75rem;
+  padding: 1.75rem;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  background: var(--bg-elevated);
 }
 
 /* ── Field ── */
@@ -116,6 +118,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
+  padding: 1rem 1.1rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
 }
 
 .fieldRow {
@@ -139,7 +145,7 @@
 
 .input,
 .textarea {
-  background: var(--bg);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: 7px;
   color: var(--fg);
