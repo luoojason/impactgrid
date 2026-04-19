@@ -1,5 +1,5 @@
 export async function analyze(intake) {
-  const r = await fetch('/api/analyze', {
+  const r = await fetch(`${import.meta.env.VITE_API_BASE ?? ''}/api/analyze`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(intake),

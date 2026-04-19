@@ -6,7 +6,7 @@ export default function useSSE(streamId, handlers) {
   useEffect(() => {
     if (!streamId) return;
 
-    const es = new EventSource('/api/stream/' + streamId);
+    const es = new EventSource(`${import.meta.env.VITE_API_BASE ?? ''}/api/stream/${streamId}`);
     esRef.current = es;
 
     const eventTypes = [

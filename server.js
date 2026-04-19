@@ -8,7 +8,18 @@ import { startReplay } from './server/demoReplay.js';
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+const allowedOrigins = (process.env.ALLOWED_ORIGINS ?? 'http://localhost:5173')
+  .split(',')
+  .map(s => s.trim())
+  .filter(Boolean);
+
+app.use(cors({
+  origin: (origin, cb) => {
+    if (!origin) return cb(null, true);
+    if (allowedOrigins.includes(origin)) return cb(null, true);
+    return cb(new Error(`Origin ${origin} not allowed by CORS`));
+  }
+}));
 app.use(express.json());
 
 const debounceMap = new Map();

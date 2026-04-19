@@ -6,6 +6,7 @@
     "dev": "vite",
     "server": "node --env-file=.env server.js",
     "server:dev": "nodemon --env-file=.env server.js",
+    "start": "node server.js",
     "build": "vite build"
   },
   "dependencies": {
