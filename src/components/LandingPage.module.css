@@ -1,0 +1,317 @@
+.page {
+  min-height: 100vh;
+  padding-top: var(--header-h);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Hero ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  padding: 5rem 6rem 5rem 6rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.heroInner {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.eyebrow {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.heroTitle {
+  font-family: 'Spectral', serif;
+  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--fg);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.heroTitle em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.heroSub {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.72;
+  color: var(--fg-muted);
+  max-width: 46ch;
+  margin: 0;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.875rem 1.75rem;
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.12s;
+  align-self: flex-start;
+  letter-spacing: 0.01em;
+}
+
+.cta:hover {
+  background: #085f52;
+  transform: translateY(-1px);
+}
+
+.ctaArrow {
+  font-size: 1.1rem;
+  transition: transform 0.15s;
+}
+
+.cta:hover .ctaArrow {
+  transform: translateX(3px);
+}
+
+/* Hero visual */
+.heroVisual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 340px;
+}
+
+.globeRing {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  animation: spinSlow 24s linear infinite;
+}
+
+.globeRing2 {
+  position: absolute;
+  inset: 24px;
+  border-radius: 50%;
+  border: 1px dashed var(--border-strong);
+  animation: spinSlow 18s linear infinite reverse;
+}
+
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+
+.globeSvg {
+  width: 220px;
+  height: 220px;
+  color: var(--accent);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Stats ── */
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.stat {
+  flex: 1;
+  max-width: 240px;
+  padding: 2.25rem 2rem;
+  text-align: center;
+}
+
+.stat + .stat {
+  border-left: 1px solid var(--border);
+}
+
+.statValue {
+  font-family: 'Spectral', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.statLabel {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--fg-muted);
+  margin-top: 0.4rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Features ── */
+.features {
+  padding: 5rem 6rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.featuresHeader {
+  margin-bottom: 3rem;
+  max-width: 54ch;
+}
+
+.featuresTitle {
+  font-family: 'Spectral', serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700;
+  color: var(--fg);
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.02em;
+}
+
+.featuresSub {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--fg-muted);
+  margin: 0;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.featureCard {
+  padding: 2rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.featureCard:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+}
+
+.featureIndex {
+  font-family: 'Spectral', serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0.6;
+  letter-spacing: 0.08em;
+}
+
+.featureTitle {
+  font-family: 'Spectral', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.featureBody {
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--fg-muted);
+  margin: 0;
+}
+
+/* ── Coda ── */
+.coda {
+  border-top: 1px solid var(--border);
+  padding: 4rem 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.codaText {
+  font-family: 'Spectral', serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  border-radius: 8px;
+  font-family: 'Albert Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.ctaSecondary:hover {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 3rem 2rem;
+    gap: 2rem;
+  }
+
+  .heroVisual {
+    height: 220px;
+  }
+
+  .features {
+    padding: 3rem 2rem;
+  }
+
+  .featureGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .coda {
+    padding: 3rem 2rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

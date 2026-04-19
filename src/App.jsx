@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import Header from './components/Header.jsx';
+import LandingPage from './components/LandingPage.jsx';
 import IntakeForm from './components/IntakeForm.jsx';
 import AnalysisView from './components/AnalysisView.jsx';
 import DeliverablesTabs from './components/DeliverablesTabs.jsx';
 import ReplayBanner from './components/ReplayBanner.jsx';
 
 export default function App() {
-  const [phase, setPhase] = useState('intake');
+  const [phase, setPhase] = useState('landing');
   const [streamId, setStreamId] = useState(null);
   const [intake, setIntake] = useState(null);
   const [deliverables, setDeliverables] = useState(null);
@@ -61,7 +62,7 @@ export default function App() {
 
   function handleDone(sections) {
     setDeliverables(sections);
-    setPhase('deliverables');
+    // Map stays as the result view; deliverables available via button in AnalysisView
   }
 
   function handleReplayDetected() {
@@ -72,6 +73,7 @@ export default function App() {
     <>
       {isReplay && <ReplayBanner />}
       <Header />
+      {phase === 'landing' && <LandingPage onBegin={() => setPhase('intake')} />}
       {phase === 'intake' && <IntakeForm onSubmit={handleSubmit} error={error} submitting={submitting} />}
       {phase === 'analyzing' && (
         <AnalysisView
